@@ -13,17 +13,23 @@ spring:
         - id: menu-service
           uri: lb://menu-service
           predicates:
-            - Path=/api/menu
+            - Path=/api/menu/**
+          filters:
+            - AuthenticationFilter
 
         - id: order-service
           uri: lb://order-service
           predicates:
-            - Path=/api/order
+            - Path=/api/order/**
+          filters:
+            - AuthenticationFilter
 
         - id: kitchen-service
           uri: lb://kitchen-service
           predicates:
-            - Path=/api/kitchen
+            - Path=/api/kitchen/**
+          filters:
+            - AuthenticationFilter
 
         - id: authentication-service
           uri: lb://authentication-service

@@ -30,15 +30,9 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
     private final RabbitTemplate template;
-    private static final String URL="localhost:8080";
-    private final WebClient client = WebClient.create("https://" +URL);
 
     public void placeOrder(OrderDTO dto) {
         Order order = new Order();
-        String orderEmail = getEmail().toString();
-        if (orderRepository.findOrderByCustomerEmail(orderEmail).isPresent()) {
-            throw new RuntimeException("you already have an order pending please wait");
-        }
         List<Item> orderedItemList = dto.getOrderedItems()
                 .stream()
                 .map(this::DtoMapper)
@@ -46,16 +40,7 @@ public class OrderService {
         order.setOrderedItems(orderedItemList);
         order.setFullPrice(orderedItemList.stream().mapToDouble(Item::getTotalPrice).sum());
         order.setOrderNumber(UUID.randomUUID().toString());
-        order.setCustomerEmail(orderEmail);
         orderRepository.save(order);
-
-        PrepDTO prepDTO = new PrepDTO();
-        prepDTO.setOrderedItems(dto.getOrderedItems());
-        prepDTO.setOrderNumber(order.getOrderNumber());
-        prepDTO.setCustomerEmail(order.getCustomerEmail());
-        prepDTO.setFullPrice(order.getFullPrice());
-
-        template.convertAndSend(MQConfig.EXCHANGE,MQConfig.ROUTING_KEY,prepDTO);
     }
 
     private Item DtoMapper(ItemDTO dto) {
@@ -69,11 +54,9 @@ public class OrderService {
         return item;
     }
 
-    private Flux<String> getEmail() {
-        return client.get()
-                .uri("/api/auth/test/current-email")
-                .retrieve()
-                .bodyToFlux(String.class);
+
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
     }
 
 

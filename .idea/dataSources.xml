@@ -22,7 +22,7 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/kitchen</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="orders@localhost" uuid="f591a607-b2e9-4ba5-a43c-0db211fbd7cf">
+    <data-source source="LOCAL" name="orders@localhost" uuid="29a8da34-81a9-4765-af97-3387be41195f">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
