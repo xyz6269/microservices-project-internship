@@ -1,4 +1,4 @@
-package com.example.orderservice.dto;
+package com.example.kitchenservice.DTO;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PrepDTO {
+public class MessageOrder {
 
     private String orderNumber;
     private Double fullPrice;
